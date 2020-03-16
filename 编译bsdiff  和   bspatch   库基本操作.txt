@@ -1,0 +1,48 @@
+linux:password ::1qaz@WSX
+
+ sudo 表示系统管理权限  permission denied
+ sudo apt-get install  xxx  安装应用
+
+1.下载bsdiff.c 和bspatch.c  
+网址： http://www.daemonology.net/bsdiff/  点击here关键字
+2.bsdiff and bspatch  use bzip2; by default they assume it is in /usr/bin.
+下载bzip2     http://www.bzip.org/
+
+
+
+
+问题1：如果   gcc  安装失败 需要按照失败的提示，重新安装。
+
+问题2：cannot find -lbz2
+解决方案：
+apt-get install libbz2-dev
+
+问题3：Makefile:13: *** missing separator.
+	解决方案：打开文件Makefile 13行加个TAB分隔
+
+问题4：
+/tmp/cceExYyV.o: In function `main':
+bsdiff.c:(.text.startup+0x2b0): undefined reference to `BZ2_bzWriteOpen'
+bsdiff.c:(.text.startup+0xaad): undefined reference to `BZ2_bzWrite'
+bsdiff.c:(.text.startup+0xc74): undefined reference to `BZ2_bzWrite'
+bsdiff.c:(.text.startup+0xe5e): undefined reference to `BZ2_bzWrite'
+bsdiff.c:(.text.startup+0xebc): undefined reference to `BZ2_bzWriteClose'
+bsdiff.c:(.text.startup+0xf16): undefined reference to `BZ2_bzWriteOpen'
+bsdiff.c:(.text.startup+0xf38): undefined reference to `BZ2_bzWrite'
+bsdiff.c:(.text.startup+0xf5b): undefined reference to `BZ2_bzWriteClose'
+bsdiff.c:(.text.startup+0xfb2): undefined reference to `BZ2_bzWriteOpen'
+bsdiff.c:(.text.startup+0xfda): undefined reference to `BZ2_bzWrite'
+bsdiff.c:(.text.startup+0xffd): undefined reference to `BZ2_bzWriteClose'
+collect2: error: ld returned 1 exit status
+<builtin>: recipe for target 'bsdiff' failed
+
+解决方案：
+ 把下载好的bzip2库拷到bsdiff的文件夹 
+修改bsdiff  bspatch 文件 ，添加如下倚赖
+#include "bzip2/bzlib.c"
+#include "bzip2/crctable.c"
+#include "bzip2/compress.c"
+#include "bzip2/decompress.c"
+#include "bzip2/randtable.c"
+#include "bzip2/blocksort.c"
+#include "bzip2/huffman.c"
